@@ -1,0 +1,62 @@
+@charset "ISO-8859-1";
+
+body {
+	color: black;
+}
+
+.barSpace {
+	height:55px;
+}
+
+.thumbs {
+	color: #888;
+	height: 80px;
+}
+.thumbs .fa-thumbs-up {
+	font-size:48px;
+	color: #0c0;
+	transition: font-size 0.5s;
+}
+.thumbs .fa-thumbs-down {
+	font-size:48px;
+	color: #c00;
+	transition: font-size 0.5s;
+}
+
+.thumbs a:hover .fa-thumbs-up{
+	font-size:52px;
+	color: #0a0;
+}
+.thumbs a:hover .fa-thumbs-down{
+	font-size:52px;
+	color: #a00;
+}
+
+.home-jumbo {
+	background-image: url("/images/home-back.png");
+	background-size: 100% 150%;
+	background-repeat: repeat;
+	background-color: #fb0;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-size: 70%, 70%;
+  background-color: black;
+}
+
+@media only screen and (max-width: 720px) {
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 50px;
+  width: 50px;
+  background-size: 60%, 60%;
+}
+}
+
+
+.carousel-inner img {
+  }
