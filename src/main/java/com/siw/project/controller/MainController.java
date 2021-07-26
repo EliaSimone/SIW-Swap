@@ -52,7 +52,7 @@ public class MainController {
 	public String dashboard(HttpServletRequest request, Model model) {
 		Utente user = (Utente) request.getSession().getAttribute("user");
 		if (user!=null) {
-			List<Messaggio> mexs = new ArrayList<Messaggio>();
+			List<Messaggio> mexs = DBManager.getInstance().MessaggioDAO().findByDest(user);
 			List<Prodotto> prods = DBManager.getInstance().prodottoDAO().getPerSeller(user);
 			List<Prodotto> sales = DBManager.getInstance().prodottoDAO().getSoldBySeller(user);
 			List<Prodotto> buys = DBManager.getInstance().prodottoDAO().getPerBuyer(user);
@@ -80,7 +80,9 @@ public class MainController {
 	
 	@GetMapping("/prodotto")
 	public String prodotto(@RequestParam int id, Model model, HttpServletRequest request) {
-		model.addAttribute("product", DBManager.getInstance().prodottoDAO().findById(id));
+		Prodotto p = DBManager.getInstance().prodottoDAO().findById(id);
+		model.addAttribute("product", p);
+		model.addAttribute("comments", DBManager.getInstance().CommentoDAO().findByProduct(p));
 		if (request.getSession().getAttribute("user")!=null)
 			return "Prodotto";
 		return "redirect:/";

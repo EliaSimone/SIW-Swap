@@ -40,6 +40,14 @@ public class DBManager {
 		return new UtenteDAOJDBC(dataSource);
 	}
 	
+	public MessaggioDAO MessaggioDAO() {
+		return new MessaggioDAOJDBC(dataSource);
+	}
+	
+	public CommentoDAO CommentoDAO() {
+		return new CommentoDAOJDBC(dataSource);
+	}
+	
 	/*public CategoriaDAO CategoriaDAO() {
 		return new CategoriaDAOJDBC(dataSource);
 	}*/

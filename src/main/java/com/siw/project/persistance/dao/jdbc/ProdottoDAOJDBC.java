@@ -63,7 +63,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 					+ "left join utente as compr on compr.nome=p.compratore\r\n"
 					+ "left join utente as vend on vend.nome=p.venditore\r\n"
 					+ "where p.identifier=?");
-			st.setInt(1, id);			
+			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
 				int _id = rs.getInt("identifier");

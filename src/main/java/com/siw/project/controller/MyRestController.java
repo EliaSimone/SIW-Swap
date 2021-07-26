@@ -1,8 +1,13 @@
 package com.siw.project.controller;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.siw.project.model.Categoria;
+import com.siw.project.model.Commento;
+import com.siw.project.model.Messaggio;
 import com.siw.project.model.Prodotto;
 import com.siw.project.model.Utente;
 import com.siw.project.persistance.DBManager;
@@ -138,9 +145,61 @@ public class MyRestController {
 		return "OK";
 	}
 	
+	@PostMapping("/mex")
+	public String mex(@RequestParam String from, @RequestParam String to, @RequestParam String text, HttpServletRequest request) {
+		Utente seller = (Utente) request.getSession().getAttribute("user");
+		if (seller==null)
+			return "NO";
+		Utente sender = DBManager.getInstance().UtenteDAO().findByName(from);
+		Utente dest = DBManager.getInstance().UtenteDAO().findByName(to);
+		Messaggio messaggio=new Messaggio(-1, sender, dest, text, new Date(System.currentTimeMillis()));
+		try {
+			DBManager.getInstance().MessaggioDAO().save(messaggio);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return "NO";
+		}
+		return "OK";
+	}
+	
+	@PostMapping("/comment")
+	public String comment(@RequestParam int productid, @RequestParam String text, HttpServletRequest request) {
+		Utente user = (Utente) request.getSession().getAttribute("user");
+		if (user==null)
+			return "NO";
+		
+		Prodotto p=DBManager.getInstance().prodottoDAO().findById(productid);		
+		Commento commento = new Commento(productid, text, user, p);
+		try {
+			DBManager.getInstance().CommentoDAO().save(commento);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return "NO";
+		}
+		return "OK";
+	}
+	
+	@PostMapping("/getcomments")
+	public List<Commento> getcomments(@RequestParam int productid, HttpServletRequest request, HttpServletResponse response) {
+		Utente user = (Utente) request.getSession().getAttribute("user");
+		if (user==null) {
+			try {
+				response.sendError(403);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
+		return DBManager.getInstance().CommentoDAO().findByProduct(p);
+	}
+	
 	@GetMapping("/ciao")
-	public Utente ciao(@RequestParam Utente u) {
-		return DBManager.getInstance().UtenteDAO().findByName(u.getNome());
+	public List<Messaggio> ciao(@RequestParam String username) {
+		Utente u = DBManager.getInstance().UtenteDAO().findByName(username);
+		return DBManager.getInstance().MessaggioDAO().findByDest(u);
 	}
 
 }

@@ -45,7 +45,7 @@
 	  			<div id="mexs" class="collapse m-3">
 	  				<ul class="list-group">
 	  					<c:forEach items="${listmex}" var="item" varStatus="status">
-	  					<li class="list-group-item">${item.testo}</li>
+	  					<li class="list-group-item">Da: ${item.utente1.nome}<span class="pull-right"><small>${item.dataGiorno} ${item.dataMeseNome} ${item.dataAnno}</small></span><br> ${item.testo}<br></li>
 	  					</c:forEach>
 					</ul>
 				</div>

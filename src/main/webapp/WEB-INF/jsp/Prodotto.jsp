@@ -56,7 +56,12 @@
 	  			Città: ${product.venditore.citta}<br>
 	  			Indirizzo: ${product.venditore.indirizzo}<br>
 	  			Numero tel.: ${product.venditore.tel}<br>
-	  			<button id="btn-contact" class="btn btn-primary w-75 m-2">Contatta</button>
+	  			<c:if test="${user.nome!=product.venditore.nome}">
+	  				<button class="btn btn-primary w-75 m-2" data-toggle="modal" data-target="#mexmodal">Invia Messaggio</button>
+	  			</c:if>
+	  			<c:if test="${user.nome==product.venditore.nome}">
+	  				<button class="btn btn-primary w-75 m-2" disabled>Contatta</button>
+	  			</c:if>
 	  			<br>
 	  			<c:if test="${product.compratore!=null}">
 	  			<h5 class="text-danger text-center w-75 m-2"><strong>VENDUTO</strong></h5>
@@ -72,29 +77,69 @@
 			</div>
 		</div>
 		
-		<div class="container-fluid bg-warning col-10 offset-1">
+		<div class="container-fluid col-10 offset-1">
 			<h4>Lascia un commento:</h4>
 	    	<form role="form">
 	    		<div class="form-group">
-	        		<textarea class="form-control" rows="3" required></textarea>
+	        		<textarea id="txt-comment" class="form-control" rows="3" required></textarea>
 	        	</div>
-	        	<button type="submit" class="btn btn-success">Pubblica</button>
+	        	<button type="button" id="btn-comment" class="btn btn-success">Pubblica</button>
 	        </form>
 	    	<br><br>
 	    
-	    	<h5>Commenti:</h5><br>      
-	      	<div class="row">
-	        	<div class="col-sm-2 text-center">
-	        		<img src="https://www.w3schools.com/bootstrap4/img_avatar1.png" class="rounded-circle w-75" alt="Immagine Profilo">
-	        	</div>
-	        	<div class="col-sm-10">
-		        	<h4>Utente</h4>
-		        	<p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-		        	<br>
-	        	</div>
+	    	<h5>Commenti:</h5>
+	    	<br>
+	    	<div id="comments">
+		    	<c:forEach items="${comments}" var="item" varStatus="status">
+		      	<div class="row">
+		        	<div class="col-sm-2 text-center">
+		        		<img src="https://www.w3schools.com/bootstrap4/img_avatar1.png" class="rounded-circle w-75" alt="Immagine Profilo">
+		        	</div>
+		        	<div class="col-sm-10">
+			        	<h4>${item.utente.nome}</h4>
+			        	<p>${item.testo}</p>
+			        	<br>
+		        	</div>
+		        </div>
+		        <br>
+		        </c:forEach>
 	        </div>
         
 	    </div>
+	    
+		<div class="modal fade" id="mexmodal">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+		      
+		          <div class="modal-header">
+		            <h4 class="modal-title">Scrivi messaggio a ${product.venditore.nome}</h4>
+		            <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          </div>
+		        
+		          <div class="modal-body">
+		            <form>
+		              <div class="form-group">
+		                <label for="mextext">Testo Messaggio:</label>
+		                <textarea class="form-control" placeholder="Messaggio" rows="3" id="mextext"></textarea>
+		              </div>
+		              <button type="button" id="btn-send" class="btn btn-primary">Invia</button>
+		            </form>
+		            <br>
+		            <div id="alertSuccess" class="alert alert-success">
+						<strong>Success!</strong> Messaggio inviato.
+		            </div>
+		            <div id="alertWrong" class="alert alert-danger">
+		            	<strong>Errore!</strong> Qualcosa non va.
+		            </div>
+		          </div>
+		        
+		          <div class="modal-footer">
+		            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		          </div>
+		        
+				</div>
+			</div>
+		</div>
 
 	</body>
 </html>

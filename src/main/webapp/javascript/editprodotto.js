@@ -45,6 +45,16 @@ function deleteprod() {
 	});
 }
 
+function test() {
+	var utente = {nome: "Mario"};
+	$.post("/ciao",
+	{u: utente},
+	function(data,status){
+		alert(data);
+	});
+	alert("bu");
+}
+
 
 
 $(document).ready(function(){
