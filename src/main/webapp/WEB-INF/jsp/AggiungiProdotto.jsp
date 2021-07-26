@@ -14,6 +14,9 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<script src="/javascript/mainNav.js"></script>
+		<script type="text/javascript">
+			var productid=null;
+		</script>
 		<script src="/javascript/editprodotto.js"></script>
 	</head>
 	<body>
@@ -52,12 +55,12 @@
 					      </div>
 					      <div class="col">
 					      	<select class="form-control" id="category">
-					        <option>elettronica</option>
-					        <option>sport</option>
-					        <option>indumenti</option>
-					        <option>casa e arredamenti</option>
-					        <option>utilità</option>
-					      </select>
+					        	<option>elettronica</option>
+					        	<option>sport</option>
+					        	<option>indumenti</option>
+					        	<option>casa e arredamenti</option>
+					        	<option>utilità</option>
+					      	</select>
 					      </div>
 					    </div>
 					    				    

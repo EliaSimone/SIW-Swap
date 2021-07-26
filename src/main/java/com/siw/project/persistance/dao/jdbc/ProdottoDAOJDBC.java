@@ -196,8 +196,22 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 
 	@Override
 	public void delete(Prodotto prodotto) {
-		// TODO Auto-generated method stub
-		
+		Connection connection = null;
+		try {
+			connection = dbSource.getConnection();
+			PreparedStatement statement = connection.prepareStatement("delete FROM prodotto WHERE identifier = ? ");
+			statement.setInt(1, prodotto.getIdentifier());
+
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}		
 	}
 	
 	@Override
@@ -260,7 +274,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
-					+ "left join utente as vend on vend.nome=p.venditore\\r\\n"
+					+ "left join utente as vend on vend.nome=p.venditore\r\n"
 					+ "where p.venditore = ? and p.compratore is null");
 			st.setString(1, user.getNome());
 			ResultSet rs = st.executeQuery();
@@ -310,7 +324,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
 					+ "left join utente as compr on compr.nome=p.compratore\r\n"
-					+ "left join utente as vend on vend.nome=p.venditore\\r\\n"
+					+ "left join utente as vend on vend.nome=p.venditore\r\n"
 					+ "where p.venditore = ? and p.compratore is not null");
 			st.setString(1, user.getNome());
 			ResultSet rs = st.executeQuery();
@@ -369,7 +383,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
 					+ "left join utente as compr on compr.nome=p.compratore\r\n"
-					+ "left join utente as vend on vend.nome=p.venditore\\r\\n"
+					+ "left join utente as vend on vend.nome=p.venditore\r\n"
 					+ "where p.compratore = ?");
 			st.setString(1, user.getNome());
 			ResultSet rs = st.executeQuery();

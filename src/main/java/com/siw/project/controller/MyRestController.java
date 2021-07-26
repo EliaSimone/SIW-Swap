@@ -105,9 +105,42 @@ public class MyRestController {
 		return "OK";
 	}
 	
+	@PostMapping("/saveproduct")
+	public String saveproduct(@RequestParam int id, @RequestParam String nome, @RequestParam double prezzo, @RequestParam String categoria, @RequestParam String descrizione, HttpServletRequest request) {
+		Utente seller = (Utente) request.getSession().getAttribute("user");
+		if (seller==null)
+			return "NO";
+		Prodotto prodotto=new Prodotto(id, nome, prezzo, descrizione, new Categoria(categoria), seller, null);
+		try {
+			DBManager.getInstance().prodottoDAO().update(prodotto);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return "NO";
+		}
+		return "OK";
+	}
+	
+	@PostMapping("/deleteproduct")
+	public String saveproduct(@RequestParam int id, HttpServletRequest request) {
+		Utente seller = (Utente) request.getSession().getAttribute("user");
+		if (seller==null)
+			return "NO";
+		Prodotto prodotto=new Prodotto();
+		prodotto.setIdentifier(id);
+		try {
+			DBManager.getInstance().prodottoDAO().delete(prodotto);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return "NO";
+		}
+		return "OK";
+	}
+	
 	@GetMapping("/ciao")
-	public Prodotto ciao() {
-		return DBManager.getInstance().prodottoDAO().findAll().get(0);
+	public Utente ciao(@RequestParam Utente u) {
+		return DBManager.getInstance().UtenteDAO().findByName(u.getNome());
 	}
 
 }

@@ -14,6 +14,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<script src="/javascript/mainNav.js"></script>
+		<script type="text/javascript">
+			var productid=${product.identifier};
+		</script>
+		<script src="/javascript/editprodotto.js"></script>
 	</head>
 	<body>
 		<jsp:include page="includes/navbar.jsp" />
@@ -50,20 +54,21 @@
 					        Categoria:
 					      </div>
 					      <div class="col">
-					      	<select class="form-control" value="" id="sel1">
-					        <option>1</option>
-					        <option>2</option>
-					        <option>3</option>
-					        <option>4</option>
-					      </select>
+					      	<select class="form-control" id="category">
+					        	<option>elettronica</option>
+					        	<option>sport</option>
+					        	<option>indumenti</option>
+					        	<option>casa e arredamenti</option>
+					        	<option>utilità</option>
+					      	</select>
 					      </div>
 					    </div>
 					    				    
 					    <div class="mt-3 mb-2">Descrizione:</div>
 					    <textarea class="form-control" placeholder="Descrizione" rows="3" id="desc">${product.descrizione}</textarea>
 					    
-					    <button type="button" class="btn btn-primary mt-3">Salva</button>
-					    <button type="button" class="btn btn-danger mt-3">Elimina</button>
+					    <button id="btn-save" type="button" class="btn btn-primary mt-3">Salva</button>
+					    <button id="btn-delete" type="button" class="btn btn-danger mt-3">Elimina</button>
 					</form>
 				</div>
 			</div>

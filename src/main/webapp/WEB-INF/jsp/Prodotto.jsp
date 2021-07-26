@@ -58,7 +58,17 @@
 	  			Numero tel.: ${product.venditore.tel}<br>
 	  			<button id="btn-contact" class="btn btn-primary w-75 m-2">Contatta</button>
 	  			<br>
-	  			<button id="btn-buy" class="btn btn-danger w-75 m-2">Compra</button>
+	  			<c:if test="${product.compratore!=null}">
+	  			<h5 class="text-danger text-center w-75 m-2"><strong>VENDUTO</strong></h5>
+	  			</c:if>
+	  			<c:if test="${product.compratore==null}">
+		  			<c:if test="${user.nome==product.venditore.nome}">
+		  			<button id="btn-buy" class="btn btn-danger w-75 m-2" disabled>Compra</button>
+		  			</c:if>
+		  			<c:if test="${user.nome!=product.venditore.nome}">
+		  			<button id="btn-buy" class="btn btn-danger w-75 m-2">Compra</button>
+		  			</c:if>
+	  			</c:if>
 			</div>
 		</div>
 		

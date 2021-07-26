@@ -2,8 +2,10 @@ function buy() {
 	$.post("/buy",
 	{productid: productid},
 	function(data,status){
-	if (data==="OK")
+	if (data==="OK") {
 		alert("Prodotto acquistato");
+		$("#btn-buy").prop('disabled', true);
+	}
 	else
 		alert("Qualcosa non va");
 	});
@@ -24,7 +26,6 @@ function mex() {
 
 
 $(document).ready(function(){
-	alert(username + " and " + productSeller);
 	$("#btn-buy").click(buy);
 	$("#btn-contact").click(mex);
 });
