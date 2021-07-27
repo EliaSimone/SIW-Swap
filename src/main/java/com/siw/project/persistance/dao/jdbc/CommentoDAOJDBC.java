@@ -56,7 +56,7 @@ public class CommentoDAOJDBC implements CommentoDAO {
 		try {
 			conn = dbSource.getConnection();
 			PreparedStatement  st = conn.prepareStatement("select c.*,\r\n"
-					+ "u.cognome as ucognome, u.password as upassword, u.citta as ucitta, u.indirizzo as uindirizzo, u.descrizione as udescr, u.tel as utel,\r\n"
+					+ "u.cognome as ucognome, u.password as upassword, u.image as uimage, u.citta as ucitta, u.indirizzo as uindirizzo, u.descrizione as udescr, u.tel as utel,\r\n"
 					+ "p.nome as pnome, p.prezzo as pprezzo\r\n"
 					+ "from commento as c\r\n"
 					+ "join utente as u on c.utente=u.nome\r\n"
@@ -71,11 +71,12 @@ public class CommentoDAOJDBC implements CommentoDAO {
 				String uNome = rs.getString("utente");
 				String uCognome = rs.getString("ucognome");
 				String uPassword = rs.getString("upassword");
+				String uImage = rs.getString("uimage");
 				String uCitta = rs.getString("ucitta");
 				String uIndr = rs.getString("uindirizzo");
 				String uDesc = rs.getString("udescr");
 				String uTel = rs.getString("utel");
-				Utente utente = new Utente(uNome, uCognome, uPassword, uCitta, uIndr, uDesc, uTel);			
+				Utente utente = new Utente(uNome, uCognome, uPassword, uImage, uCitta, uIndr, uDesc, uTel);			
 				
 				commenti.add(new Commento(id, testo, utente, prodotto));	
 			}

@@ -36,7 +36,7 @@
 		  	<c:if test="${status.index!=0}">
 		  	<div class="carousel-item text-center">
 		  	</c:if>
-		      <img src="https://www.w3schools.com/bootstrap4/img_avatar1.png" class="img-fluid" alt="Immagine prodotto">
+		      <img src="${item.image}" height="600" alt="Immagine prodotto">
 		      <div class="mt-2">
 		        <h3>${item.nome} <span class="text-primary">${item.fprezzo}&euro;</span></h3>
 		        <p>${item.descrizione}</p>

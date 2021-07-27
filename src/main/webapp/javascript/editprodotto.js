@@ -1,6 +1,7 @@
 function add() {
 	$.post("/addproduct",
 	{nome: $("#name").val(),
+	image: $("#image").val(),
 	prezzo: $("#price").val(),
 	categoria: $("#category").val(),
 	descrizione: $("#desc").val()},
@@ -18,6 +19,7 @@ function save() {
 	$.post("/saveproduct",
 	{id: productid,
 	nome: $("#name").val(),
+	image: $("#image").val(),
 	prezzo: $("#price").val(),
 	categoria: $("#category").val(),
 	descrizione: $("#desc").val()},

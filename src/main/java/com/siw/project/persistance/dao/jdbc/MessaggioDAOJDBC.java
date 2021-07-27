@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,12 +56,11 @@ public class MessaggioDAOJDBC implements MessaggioDAO {
 		try {
 			conn = dbSource.getConnection();
 			PreparedStatement  st = conn.prepareStatement("select m.*,\r\n"
-					+ "s.cognome as scognome, s.password as spassword, s.citta as scitta, s.indirizzo as sindirizzo, s.descrizione as sdescr, s.tel as stel,\r\n"
-					+ "d.cognome as dcognome, d.password as dpassword, d.citta as dcitta, d.indirizzo as dindirizzo, d.descrizione as ddescr, d.tel as dtel\r\n"
+					+ "s.cognome as scognome, s.password as spassword, s.image as simage, s.citta as scitta, s.indirizzo as sindirizzo, s.descrizione as sdescr, s.tel as stel\r\n"
 					+ "from messaggio as m\r\n"
 					+ "join utente as s on s.nome=m.utente1\r\n"
 					+ "join utente as d on d.nome=m.utente2\r\n"
-					+ "where m.utente2=?");
+					+ "where m.utente2=? order by data desc");
 			st.setString(1, dest.getNome());
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
@@ -73,22 +71,14 @@ public class MessaggioDAOJDBC implements MessaggioDAO {
 				String uNome = rs.getString("utente1");
 				String uCognome = rs.getString("scognome");
 				String uPassword = rs.getString("spassword");
+				String uImage = rs.getString("simage");
 				String uCitta = rs.getString("scitta");
 				String uIndr = rs.getString("sindirizzo");
 				String uDesc = rs.getString("sdescr");
 				String uTel = rs.getString("stel");
-				Utente utente1 = new Utente(uNome, uCognome, uPassword, uCitta, uIndr, uDesc, uTel);
+				Utente utente1 = new Utente(uNome, uCognome, uPassword, uImage, uCitta, uIndr, uDesc, uTel);
 				
-				uNome = rs.getString("utente2");
-				uCognome = rs.getString("dcognome");
-				uPassword = rs.getString("dpassword");
-				uCitta = rs.getString("dcitta");
-				uIndr = rs.getString("dindirizzo");
-				uDesc = rs.getString("ddescr");
-				uTel = rs.getString("dtel");
-				Utente utente2 = new Utente(uNome, uCognome, uPassword, uCitta, uIndr, uDesc, uTel);
-				
-				mexs.add(new Messaggio(id, utente1, utente2, testo, data));	
+				mexs.add(new Messaggio(id, utente1, dest, testo, data));	
 			}
 			
 		} catch (SQLException e) {

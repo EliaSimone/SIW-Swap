@@ -4,6 +4,7 @@ public class Utente {
 	private String nome;
 	private String cognome;
 	private String password;
+	private String image;
 	private String citta;
 	private String indirizzo;
 	private String descrizione;
@@ -11,10 +12,11 @@ public class Utente {
 	
 	public Utente() {}
 	
-	public Utente(String nome, String cognome, String password, String citta, String indirizzo, String descrizione, String tel) {
+	public Utente(String nome, String cognome, String password, String image, String citta, String indirizzo, String descrizione, String tel) {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.password = password;
+		this.image = image;
 		this.citta = citta;
 		this.indirizzo = indirizzo;
 		this.descrizione = descrizione;
@@ -38,6 +40,12 @@ public class Utente {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 	public String getCitta() {
 		return citta;

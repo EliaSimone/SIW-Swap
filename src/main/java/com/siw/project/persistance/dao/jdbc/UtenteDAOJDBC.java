@@ -24,14 +24,15 @@ public class UtenteDAOJDBC implements UtenteDAO {
 		Connection connection=null;
 		try {
 			connection = dbSource.getConnection();
-			PreparedStatement statement = connection.prepareStatement("insert into utente(nome, cognome, password, citta, indirizzo, descrizione, tel) values (?,?,?,?,?,?,?);");
+			PreparedStatement statement = connection.prepareStatement("insert into utente(nome, cognome, password, image, citta, indirizzo, descrizione, tel) values (?,?,?,?,?,?,?,?);");
 			statement.setString(1, utente.getNome());
 			statement.setString(2, utente.getCognome());
 			statement.setString(3, utente.getPassword());
-			statement.setString(4, utente.getCitta());
-			statement.setString(5, utente.getIndirizzo());
-			statement.setString(6, utente.getDescrizione());
-			statement.setString(7, utente.getTel());
+			statement.setString(4, utente.getImage());
+			statement.setString(5, utente.getCitta());
+			statement.setString(6, utente.getIndirizzo());
+			statement.setString(7, utente.getDescrizione());
+			statement.setString(8, utente.getTel());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -57,12 +58,13 @@ public class UtenteDAOJDBC implements UtenteDAO {
 				String nome = rs.getString("nome");
 				String cognome = rs.getString("cognome");
 				String password = rs.getString("password");
+				String image = rs.getString("image");
 				String citta = rs.getString("citta");
 				String indirizzo = rs.getString("indirizzo");
 				String desc = rs.getString("descrizione");
 				String tel = rs.getString("tel");
 				
-				u = new Utente(nome, cognome, password, citta, indirizzo, desc, tel);	
+				u = new Utente(nome, cognome, password, image, citta, indirizzo, desc, tel);	
 			}
 			
 		} catch (SQLException e) {
@@ -91,12 +93,13 @@ public class UtenteDAOJDBC implements UtenteDAO {
 				String nome = rs.getString("nome");
 				String cognome = rs.getString("cognome");
 				String password = rs.getString("password");
+				String image = rs.getString("image");
 				String citta = rs.getString("citta");
 				String indirizzo = rs.getString("indirizzo");
 				String desc = rs.getString("descrizione");
 				String tel = rs.getString("tel");
 				
-				utenti.add(new Utente(nome, cognome, password, citta, indirizzo, desc, tel));
+				utenti.add(new Utente(nome, cognome, password, image, citta, indirizzo, desc, tel));
 			}
 			
 		} catch (SQLException e) {
@@ -117,15 +120,16 @@ public class UtenteDAOJDBC implements UtenteDAO {
 		Connection connection = null;
 		try {
 			connection = dbSource.getConnection();
-			String update = "update utente SET cognome = ?, password = ?, citta = ?, indirizzo = ?, descrizione = ?, tel = ? WHERE nome = ?";
+			String update = "update utente SET cognome = ?, password = ?, image = ?, citta = ?, indirizzo = ?, descrizione = ?, tel = ? WHERE nome = ?";
 			PreparedStatement statement = connection.prepareStatement(update);
 			statement.setString(1, utente.getCognome());
 			statement.setString(2, utente.getPassword());
-			statement.setString(3, utente.getCitta());
-			statement.setString(4, utente.getIndirizzo());
-			statement.setString(5, utente.getDescrizione());
-			statement.setString(6, utente.getTel());
-			statement.setString(7, utente.getNome());
+			statement.setString(3, utente.getImage());
+			statement.setString(4, utente.getCitta());
+			statement.setString(5, utente.getIndirizzo());
+			statement.setString(6, utente.getDescrizione());
+			statement.setString(7, utente.getTel());
+			statement.setString(8, utente.getNome());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			if (connection != null) {

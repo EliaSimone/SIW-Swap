@@ -23,8 +23,7 @@
   			<h4 class="text-center my-5">Informazioni profilo per ${user.nome}</h4>
   			<div class="row">
 				<div class="col-12 col-sm-5 col-xl-4 ml-xl-5">
-		  			<img src="https://www.w3schools.com/bootstrap/cinqueterre.jpg" class="img-thumbnail shadow w-75 mx-auto d-block" alt="Immagine Prodotto">
-		  			<button class="btn btn-success mt-4 mb-5 mx-auto d-block w-75">Cambia immagine</button>
+		  			<img src="${user.image}" class="img-thumbnail shadow w-75 mx-auto d-block" alt="Immagine Prodotto">
 				</div>
 				<div class="col-12 col-sm-6 col-xl-7">
 		  			<form class="mr-xl-5">
@@ -70,6 +69,15 @@
 					      </div>
 					      <div class="col">
 					        <input type="number" class="form-control" placeholder="Num. tel." max="1000000000000" value="${user.tel}" id="telnumber">
+					      </div>
+					    </div>
+					    
+					    <div class="row my-2">
+					      <div class="my-auto col-xl-2 col-lg-3 col-sm-4 col-3">
+					        Immagine:
+					      </div>
+					      <div class="col">
+					        <input type="text" class="form-control" placeholder="Url Imagine" maxlength="256" value="${user.image}" id="image">
 					      </div>
 					    </div>
 					    

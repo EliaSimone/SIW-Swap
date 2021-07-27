@@ -27,7 +27,7 @@
 		
 		<div class="row my-5 mx-5 pl-xl-5 pl-lg-4 pl-3">
 			<div class="col-6 col-md-3">
-	  			<img src="https://www.w3schools.com/bootstrap/cinqueterre.jpg" class="img-thumbnail shadow w-100" alt="Immagine Prodotto">
+	  			<img src="${product.image}" class="img-thumbnail shadow w-100" alt="Immagine Prodotto">
 	  			<br>
 	  			<br>
 	  			<div class="d-inline-flex thumbs ml-2">
@@ -95,7 +95,7 @@
 		    	<c:forEach items="${comments}" var="item" varStatus="status">
 		      	<div class="row">
 		        	<div class="col-sm-2 text-center">
-		        		<img src="https://www.w3schools.com/bootstrap4/img_avatar1.png" class="rounded-circle w-75" alt="Immagine Profilo">
+		        		<img src="${item.utente.image}" class="rounded-circle w-75" alt="Immagine Profilo">
 		        	</div>
 		        	<div class="col-sm-10">
 			        	<h4>${item.utente.nome}</h4>

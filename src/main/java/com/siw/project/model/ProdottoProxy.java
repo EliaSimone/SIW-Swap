@@ -17,8 +17,8 @@ public class ProdottoProxy extends Prodotto {
 		dbSource=DBManager.getInstance().getDataSource();
 	}
 	
-	public ProdottoProxy(int identifier, String nome, double prezzo, String descrizione, Categoria categoria, Utente venditore, Utente compratore) {
-		super(identifier, nome, prezzo, descrizione, categoria, venditore, compratore);
+	public ProdottoProxy(int identifier, String nome, String image, double prezzo, String descrizione, Categoria categoria, Utente venditore, Utente compratore) {
+		super(identifier, nome, image, prezzo, descrizione, categoria, venditore, compratore);
 		dbSource=DBManager.getInstance().getDataSource();
 	}
 	

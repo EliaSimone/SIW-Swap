@@ -1,8 +1,7 @@
 package com.siw.project.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +42,7 @@ public class MyRestController {
 		Utente u = DBManager.getInstance().utenteDAO().findByName(user);
 		if (u!=null)
 			return "NO";
-		u = new Utente(user, null, password, null, null, null, null);
+		u = new Utente(user, null, password, null, null, null, null, null);
 		try {
 			DBManager.getInstance().utenteDAO().save(u);
 		}
@@ -79,11 +78,13 @@ public class MyRestController {
 	}
 	
 	@PostMapping("/saveprofile")
-	public String saveprofile(@RequestParam String cognome, @RequestParam String citta, @RequestParam String indirizzo, @RequestParam String tel, @RequestParam String descrizione, HttpServletRequest request) {
+	public String saveprofile(@RequestParam String cognome, @RequestParam String image, @RequestParam String citta, @RequestParam String indirizzo, @RequestParam String tel, @RequestParam String descrizione, HttpServletRequest request) {
 		Utente user = (Utente) request.getSession().getAttribute("user");
 		if (user==null)
 			return "NO";
+		
 		user.setCognome(cognome);
+		user.setImage(image);
 		user.setCitta(citta);
 		user.setIndirizzo(indirizzo);
 		user.setTel(tel);
@@ -99,11 +100,11 @@ public class MyRestController {
 	}
 	
 	@PostMapping("/addproduct")
-	public String addproduct(@RequestParam String nome, @RequestParam double prezzo, @RequestParam String categoria, @RequestParam String descrizione, HttpServletRequest request) {
+	public String addproduct(@RequestParam String nome, @RequestParam String image, @RequestParam double prezzo, @RequestParam String categoria, @RequestParam String descrizione, HttpServletRequest request) {
 		Utente seller = (Utente) request.getSession().getAttribute("user");
 		if (seller==null)
 			return "NO";
-		Prodotto prodotto=new Prodotto(-1, nome, prezzo, descrizione, new Categoria(categoria), seller, null);
+		Prodotto prodotto=new Prodotto(-1, nome, image, prezzo, descrizione, new Categoria(categoria), seller, null);
 		try {
 			DBManager.getInstance().prodottoDAO().save(prodotto);
 		}
@@ -115,11 +116,11 @@ public class MyRestController {
 	}
 	
 	@PostMapping("/saveproduct")
-	public String saveproduct(@RequestParam int id, @RequestParam String nome, @RequestParam double prezzo, @RequestParam String categoria, @RequestParam String descrizione, HttpServletRequest request) {
+	public String saveproduct(@RequestParam int id, @RequestParam String nome, @RequestParam String image, @RequestParam double prezzo, @RequestParam String categoria, @RequestParam String descrizione, HttpServletRequest request) {
 		Utente seller = (Utente) request.getSession().getAttribute("user");
 		if (seller==null)
 			return "NO";
-		Prodotto prodotto=new Prodotto(id, nome, prezzo, descrizione, new Categoria(categoria), seller, null);
+		Prodotto prodotto=new Prodotto(id, nome, image, prezzo, descrizione, new Categoria(categoria), seller, null);
 		try {
 			DBManager.getInstance().prodottoDAO().update(prodotto);
 		}

@@ -27,16 +27,17 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		Connection connection=null;
 		try {
 			connection = dbSource.getConnection();
-			PreparedStatement statement = connection.prepareStatement("insert into prodotto(nome, prezzo, descrizione, categoria, venditore, compratore) values (?,?,?,?,?,?);");
+			PreparedStatement statement = connection.prepareStatement("insert into prodotto(nome, image, prezzo, descrizione, categoria, venditore, compratore) values (?,?,?,?,?,?,?);");
 			statement.setString(1, prodotto.getNome());
-			statement.setDouble(2, prodotto.getPrezzo());
-			statement.setString(3, prodotto.getDescrizione());
-			statement.setString(4, prodotto.getCategoria().getNome());
-			statement.setString(5, prodotto.getVenditore().getNome());
+			statement.setString(2, prodotto.getImage());
+			statement.setDouble(3, prodotto.getPrezzo());
+			statement.setString(4, prodotto.getDescrizione());
+			statement.setString(5, prodotto.getCategoria().getNome());
+			statement.setString(6, prodotto.getVenditore().getNome());
 			if (prodotto.getCompratore()==null)
-				statement.setString(6, null);
+				statement.setString(7, null);
 			else
-				statement.setString(6, prodotto.getCompratore().getNome());
+				statement.setString(8, prodotto.getCompratore().getNome());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -56,8 +57,8 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		try {
 			conn = dbSource.getConnection();
 			PreparedStatement  st = conn.prepareStatement("select p.*,\r\n"
-					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel,\r\n"
-					+ "compr.cognome as comprcognome, compr.password as comprpassword, compr.citta as comprcitta, compr.indirizzo as comprindirizzo, compr.descrizione as comprdescr, compr.tel as comprtel\r\n"
+					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.image as vendimage, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel,\r\n"
+					+ "compr.cognome as comprcognome, compr.password as comprpassword, compr.image as comprimage, compr.citta as comprcitta, compr.indirizzo as comprindirizzo, compr.descrizione as comprdescr, compr.tel as comprtel\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
 					+ "left join utente as compr on compr.nome=p.compratore\r\n"
@@ -68,6 +69,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 			if (rs.next()) {
 				int _id = rs.getInt("identifier");
 				String nome = rs.getString("nome");
+				String image = rs.getString("image");
 				double prezzo = rs.getDouble("prezzo");
 				String desc = rs.getString("descrizione");
 				
@@ -76,25 +78,27 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 				String vNome = rs.getString("venditore");
 				String vCognome = rs.getString("vendcognome");
 				String vPassword = rs.getString("vendpassword");
+				String vImage = rs.getString("vendimage");
 				String vCitta = rs.getString("vendcitta");
 				String vIndr = rs.getString("vendindirizzo");
 				String vDesc = rs.getString("venddescr");
 				String vTel = rs.getString("vendtel");
-				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+				Utente vend = new Utente(vNome, vCognome, vPassword, vImage, vCitta, vIndr, vDesc, vTel);
 				
 				Utente compr=null;
 				if (rs.getString("compratore")!=null) {
 					vNome = rs.getString("compratore");
 					vCognome = rs.getString("comprcognome");
 					vPassword = rs.getString("comprpassword");
+					vImage = rs.getString("comprimage");
 					vCitta = rs.getString("comprcitta");
 					vIndr = rs.getString("comprindirizzo");
 					vDesc = rs.getString("comprdescr");
 					vTel = rs.getString("comprtel");
-					compr = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+					compr = new Utente(vNome, vCognome, vPassword, vImage, vCitta, vIndr, vDesc, vTel);
 				}
 				
-				p = new Prodotto(_id, nome, prezzo, desc, catg, vend, compr);
+				p = new Prodotto(_id, nome, image, prezzo, desc, catg, vend, compr);
 			}
 			
 		} catch (SQLException e) {
@@ -119,7 +123,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 			conn = dbSource.getConnection();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("select p.*,\r\n"
-					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
+					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.image as vendimage, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
 					+ "left join utente as vend on vend.nome=p.venditore\r\n"
@@ -127,6 +131,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 			while (rs.next()) {
 				int _id = rs.getInt("identifier");
 				String nome = rs.getString("nome");
+				String image = rs.getString("image");
 				double prezzo = rs.getDouble("prezzo");
 				String desc = rs.getString("descrizione");
 				
@@ -135,13 +140,14 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 				String vNome = rs.getString("venditore");
 				String vCognome = rs.getString("vendcognome");
 				String vPassword = rs.getString("vendpassword");
+				String vImage = rs.getString("vendimage");
 				String vCitta = rs.getString("vendcitta");
 				String vIndr = rs.getString("vendindirizzo");
 				String vDesc = rs.getString("venddescr");
 				String vTel = rs.getString("vendtel");
-				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+				Utente vend = new Utente(vNome, vCognome, vPassword, vImage, vCitta, vIndr, vDesc, vTel);
 				
-				prodotti.add(new Prodotto(_id, nome, prezzo, desc, catg, vend, null));	
+				prodotti.add(new Prodotto(_id, nome, image, prezzo, desc, catg, vend, null));	
 			}
 			
 		} catch (SQLException e) {
@@ -162,19 +168,19 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		Connection connection = null;
 		try {
 			connection = dbSource.getConnection();
-			String update = "update prodotto SET nome = ?, prezzo = ?, descrizione = ?, categoria = ?, venditore = ?, compratore = ? WHERE identifier = ?";
-			PreparedStatement statement = connection.prepareStatement(update);
+			PreparedStatement statement = connection.prepareStatement("update prodotto SET nome = ?, image = ?, prezzo = ?, descrizione = ?, categoria = ?, venditore = ?, compratore = ? WHERE identifier = ?");
 			statement.setString(1, prodotto.getNome());
-			statement.setDouble(2, prodotto.getPrezzo());
-			statement.setString(3, prodotto.getDescrizione());
-			statement.setString(4, prodotto.getCategoria().getNome());
-			statement.setString(5, prodotto.getVenditore().getNome());
+			statement.setString(2, prodotto.getImage());
+			statement.setDouble(3, prodotto.getPrezzo());
+			statement.setString(4, prodotto.getDescrizione());
+			statement.setString(5, prodotto.getCategoria().getNome());
+			statement.setString(6, prodotto.getVenditore().getNome());
 			if (prodotto.getCompratore()==null)
-				statement.setString(6, null);
+				statement.setString(7, null);
 			else
-				statement.setString(6, prodotto.getCompratore().getNome());
+				statement.setString(7, prodotto.getCompratore().getNome());
 			
-			statement.setInt(7, prodotto.getIdentifier());
+			statement.setInt(8, prodotto.getIdentifier());
 
 			statement.executeUpdate();
 		} catch (SQLException e) {
@@ -222,7 +228,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		try {
 			conn = dbSource.getConnection();
 			PreparedStatement  st = conn.prepareStatement("select p.*,\r\n"
-					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
+					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.image as vendimage, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
 					+ "left join utente as vend on vend.nome=p.venditore\r\n"
@@ -232,6 +238,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 			while (rs.next()) {
 				int _id = rs.getInt("identifier");
 				String nome = rs.getString("nome");
+				String image = rs.getString("image");
 				double prezzo = rs.getDouble("prezzo");
 				String desc = rs.getString("descrizione");
 				
@@ -240,13 +247,14 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 				String vNome = rs.getString("venditore");
 				String vCognome = rs.getString("vendcognome");
 				String vPassword = rs.getString("vendpassword");
+				String vImage = rs.getString("vendimage");
 				String vCitta = rs.getString("vendcitta");
 				String vIndr = rs.getString("vendindirizzo");
 				String vDesc = rs.getString("venddescr");
 				String vTel = rs.getString("vendtel");
-				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+				Utente vend = new Utente(vNome, vCognome, vPassword, vImage, vCitta, vIndr, vDesc, vTel);
 				
-				prodotti.add(new Prodotto(_id, nome, prezzo, desc, catg, vend, null));	
+				prodotti.add(new Prodotto(_id, nome, image, prezzo, desc, catg, vend, null));	
 			}
 			
 		} catch (SQLException e) {
@@ -270,7 +278,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		try {
 			conn = dbSource.getConnection();
 			PreparedStatement  st = conn.prepareStatement("select p.*,\r\n"
-					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
+					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.image as vendimage, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
 					+ "left join utente as vend on vend.nome=p.venditore\r\n"
@@ -281,6 +289,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 			while (rs.next()) {
 				int _id = rs.getInt("identifier");
 				String nome = rs.getString("nome");
+				String image = rs.getString("image");
 				double prezzo = rs.getDouble("prezzo");
 				String desc = rs.getString("descrizione");
 				
@@ -289,13 +298,14 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 				String vNome = rs.getString("venditore");
 				String vCognome = rs.getString("vendcognome");
 				String vPassword = rs.getString("vendpassword");
+				String vImage = rs.getString("vendimage");
 				String vCitta = rs.getString("vendcitta");
 				String vIndr = rs.getString("vendindirizzo");
 				String vDesc = rs.getString("venddescr");
 				String vTel = rs.getString("vendtel");
-				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+				Utente vend = new Utente(vNome, vCognome, vPassword, vImage, vCitta, vIndr, vDesc, vTel);
 				
-				prodotti.add(new Prodotto(_id, nome, prezzo, desc, catg, vend, null));
+				prodotti.add(new Prodotto(_id, nome, image, prezzo, desc, catg, vend, null));
 			}
 			
 		} catch (SQLException e) {
@@ -318,32 +328,22 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		
 		try {
 			conn = dbSource.getConnection();
-			PreparedStatement  st = conn.prepareStatement("select p.*,\r\n"
-					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
+			PreparedStatement  st = conn.prepareStatement("select p.*\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
-					+ "left join utente as vend on vend.nome=p.venditore\r\n"
 					+ "where p.venditore = ? and p.compratore is null");
 			st.setString(1, user.getNome());
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				int _id = rs.getInt("identifier");
 				String nome = rs.getString("nome");
+				String image = rs.getString("image");
 				double prezzo = rs.getDouble("prezzo");
 				String desc = rs.getString("descrizione");
 				
 				Categoria catg = new Categoria(rs.getString("categoria"));
 				
-				String vNome = rs.getString("venditore");
-				String vCognome = rs.getString("vendcognome");
-				String vPassword = rs.getString("vendpassword");
-				String vCitta = rs.getString("vendcitta");
-				String vIndr = rs.getString("vendindirizzo");
-				String vDesc = rs.getString("venddescr");
-				String vTel = rs.getString("vendtel");
-				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
-				
-				prodotti.add(new Prodotto(_id, nome, prezzo, desc, catg, vend, null));	
+				prodotti.add(new Prodotto(_id, nome, image, prezzo, desc, catg, user, null));	
 			}
 			
 		} catch (SQLException e) {
@@ -367,42 +367,33 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		try {
 			conn = dbSource.getConnection();
 			PreparedStatement  st = conn.prepareStatement("select p.*,\r\n"
-					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel,\r\n"
-					+ "compr.cognome as comprcognome, compr.password as comprpassword, compr.citta as comprcitta, compr.indirizzo as comprindirizzo, compr.descrizione as comprdescr, compr.tel as comprtel\r\n"
+					+ "compr.cognome as comprcognome, compr.password as comprpassword, compr.image as comprimage, compr.citta as comprcitta, compr.indirizzo as comprindirizzo, compr.descrizione as comprdescr, compr.tel as comprtel\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
 					+ "left join utente as compr on compr.nome=p.compratore\r\n"
-					+ "left join utente as vend on vend.nome=p.venditore\r\n"
 					+ "where p.venditore = ? and p.compratore is not null");
 			st.setString(1, user.getNome());
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				int _id = rs.getInt("identifier");
 				String nome = rs.getString("nome");
+				String image = rs.getString("image");
 				double prezzo = rs.getDouble("prezzo");
 				String desc = rs.getString("descrizione");
 				
 				Categoria catg = new Categoria(rs.getString("categoria"));
 				
-				String vNome = rs.getString("venditore");
-				String vCognome = rs.getString("vendcognome");
-				String vPassword = rs.getString("vendpassword");
-				String vCitta = rs.getString("vendcitta");
-				String vIndr = rs.getString("vendindirizzo");
-				String vDesc = rs.getString("venddescr");
-				String vTel = rs.getString("vendtel");
-				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+				String vNome = rs.getString("compratore");
+				String vCognome = rs.getString("comprcognome");
+				String vPassword = rs.getString("comprpassword");
+				String vImage = rs.getString("comprimage");
+				String vCitta = rs.getString("comprcitta");
+				String vIndr = rs.getString("comprindirizzo");
+				String vDesc = rs.getString("comprdescr");
+				String vTel = rs.getString("comprtel");
+				Utente compr = new Utente(vNome, vCognome, vPassword, vImage, vCitta, vIndr, vDesc, vTel);
 				
-				vNome = rs.getString("compratore");
-				vCognome = rs.getString("comprcognome");
-				vPassword = rs.getString("comprpassword");
-				vCitta = rs.getString("comprcitta");
-				vIndr = rs.getString("comprindirizzo");
-				vDesc = rs.getString("comprdescr");
-				vTel = rs.getString("comprtel");
-				Utente compr = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
-				
-				prodotti.add(new Prodotto(_id, nome, prezzo, desc, catg, vend, compr));	
+				prodotti.add(new Prodotto(_id, nome, image, prezzo, desc, catg, user, compr));	
 			}
 			
 		} catch (SQLException e) {
@@ -426,11 +417,9 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 		try {
 			conn = dbSource.getConnection();
 			PreparedStatement  st = conn.prepareStatement("select p.*,\r\n"
-					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel,\r\n"
-					+ "compr.cognome as comprcognome, compr.password as comprpassword, compr.citta as comprcitta, compr.indirizzo as comprindirizzo, compr.descrizione as comprdescr, compr.tel as comprtel\r\n"
+					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.image as vimage, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
 					+ "from prodotto as p\r\n"
 					+ "left join categoria as c on c.nome=p.categoria\r\n"
-					+ "left join utente as compr on compr.nome=p.compratore\r\n"
 					+ "left join utente as vend on vend.nome=p.venditore\r\n"
 					+ "where p.compratore = ?");
 			st.setString(1, user.getNome());
@@ -438,6 +427,7 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 			while (rs.next()) {
 				int _id = rs.getInt("identifier");
 				String nome = rs.getString("nome");
+				String image = rs.getString("image");
 				double prezzo = rs.getDouble("prezzo");
 				String desc = rs.getString("descrizione");
 				
@@ -446,22 +436,14 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 				String vNome = rs.getString("venditore");
 				String vCognome = rs.getString("vendcognome");
 				String vPassword = rs.getString("vendpassword");
+				String vImage = rs.getString("vimage");
 				String vCitta = rs.getString("vendcitta");
 				String vIndr = rs.getString("vendindirizzo");
 				String vDesc = rs.getString("venddescr");
 				String vTel = rs.getString("vendtel");
-				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+				Utente vend = new Utente(vNome, vCognome, vPassword, vImage, vCitta, vIndr, vDesc, vTel);
 				
-				vNome = rs.getString("compratore");
-				vCognome = rs.getString("vendcognome");
-				vPassword = rs.getString("comprpassword");
-				vCitta = rs.getString("comprcitta");
-				vIndr = rs.getString("comprindirizzo");
-				vDesc = rs.getString("comprdescr");
-				vTel = rs.getString("comprtel");
-				Utente compr = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
-				
-				prodotti.add(new Prodotto(_id, nome, prezzo, desc, catg, vend, compr));	
+				prodotti.add(new Prodotto(_id, nome, image, prezzo, desc, catg, vend, user));	
 			}
 			
 		} catch (SQLException e) {

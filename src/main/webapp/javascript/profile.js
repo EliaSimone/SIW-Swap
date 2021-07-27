@@ -1,6 +1,7 @@
 function save() {
 	$.post("/saveprofile",
 	{cognome: $("#surname").val(),
+	image: $("#image").val(),
 	citta: $("#city").val(),
 	indirizzo: $("#address").val(),
 	tel: $("#telnumber").val(),

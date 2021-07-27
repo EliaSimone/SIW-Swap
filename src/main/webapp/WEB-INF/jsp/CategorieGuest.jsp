@@ -30,7 +30,7 @@
 			<c:forEach items="${listprod.value}" var="product" varStatus="status2">
 			<div class="col-xl-3 col-lg-4 col-md-6 p-4">
 				<div class="card shadow p-2">
-					<img class="card-img-top" src="https://www.w3schools.com/bootstrap4/img_avatar1.png" alt="Immagine prodotto">
+					<img class="card-img-top" src="${product.image}" alt="Immagine prodotto">
 					<div class="card-body">
 						<h4 class="card-title">${product.nome} <span class="text-primary ml-2">${product.fprezzo}&euro;</span></h4>
 						<p class="card-text">${product.descrizione}</p>
