@@ -14,13 +14,20 @@ body {
 }
 .thumbs .fa-thumbs-up {
 	font-size:48px;
-	color: #0c0;
+	color: #888;
 	transition: font-size 0.5s;
 }
 .thumbs .fa-thumbs-down {
 	font-size:48px;
-	color: #c00;
+	color: #888;
 	transition: font-size 0.5s;
+}
+
+.thumbs .fa-thumbs-up.set{
+	color: #0c0;
+}
+.thumbs .fa-thumbs-down.set {
+	color: #c00;
 }
 
 .thumbs a:hover .fa-thumbs-up{
@@ -30,6 +37,13 @@ body {
 .thumbs a:hover .fa-thumbs-down{
 	font-size:52px;
 	color: #a00;
+}
+
+.thumbs a:active .fa-thumbs-up{
+	font-size:54px;
+}
+.thumbs a:active .fa-thumbs-down{
+	font-size:54px;
 }
 
 .home-jumbo {

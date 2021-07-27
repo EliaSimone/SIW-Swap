@@ -32,14 +32,14 @@
 	  			<br>
 	  			<div class="d-inline-flex thumbs ml-2">
 	  				<div class="text-center">
-	  					<a href="#"><i class="fa fa-thumbs-up"></i></a>
+	  					<a href="javascript:void(0);" id="thumb-up"><i class="fa fa-thumbs-up"></i></a>
 	  					<br>
-	  					<strong>100</strong>
+	  					<span id="nthumbs-up"><strong>0</strong></span>
 	  				</div>
 	  				<div class="text-center ml-4">
-	  					<a href="#"><i class="fa fa-thumbs-down"></i></a>
+	  					<a href="javascript:void(0);" id="thumb-down"><i class="fa fa-thumbs-down"></i></a>
 	  					<br>
-	  					<strong>9</strong>
+	  					<span id="nthumbs-down"><strong>0</strong></span>
 	  				</div>
 	  			</div>
 			</div>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.siw.project.model.Categoria;
 import com.siw.project.model.Commento;
+import com.siw.project.model.Like;
 import com.siw.project.model.Messaggio;
 import com.siw.project.model.Prodotto;
 import com.siw.project.model.Utente;
@@ -185,21 +187,70 @@ public class MyRestController {
 	public List<Commento> getcomments(@RequestParam int productid, HttpServletRequest request, HttpServletResponse response) {
 		Utente user = (Utente) request.getSession().getAttribute("user");
 		if (user==null) {
-			try {
-				response.sendError(403);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			response.setStatus(403);
+			return null;
 		}
 		Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
 		return DBManager.getInstance().CommentoDAO().findByProduct(p);
 	}
 	
-	@GetMapping("/ciao")
-	public List<Messaggio> ciao(@RequestParam String username) {
-		Utente u = DBManager.getInstance().UtenteDAO().findByName(username);
-		return DBManager.getInstance().MessaggioDAO().findByDest(u);
+	@PostMapping("/setlike")
+	public String setlike(@RequestParam int productid, @RequestParam boolean up, HttpServletRequest request) {
+		Utente user = (Utente) request.getSession().getAttribute("user");
+		if (user==null)
+			return "NO";
+		Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
+		Like l = DBManager.getInstance().LikeDAO().findByPrimaryKey(p, user);
+		if (l==null)
+			DBManager.getInstance().LikeDAO().save(new Like(up, user, p));
+		else {
+			if (l.isUp() && up)
+				DBManager.getInstance().LikeDAO().delete(l);
+			if (!l.isUp() && !up)
+				DBManager.getInstance().LikeDAO().delete(l);
+			else
+				DBManager.getInstance().LikeDAO().update(new Like(up, user, p));
+		}
+		return "OK";
+	}
+	
+	@PostMapping("/getlike")
+	public String getlike(@RequestParam int productid, HttpServletRequest request) {
+		Utente user = (Utente) request.getSession().getAttribute("user");
+		if (user==null)
+			return "NO";
+		Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
+		Like l = DBManager.getInstance().LikeDAO().findByPrimaryKey(p, user);
+		if (l==null)
+			return "NO";
+		else {
+			if (l.isUp())
+				return "UP";
+			else
+				return "DOWN";
+		}
+	}
+	
+	@PostMapping("/getnlikes")
+	public HashMap<String,Integer> getnlikes(@RequestParam int productid, HttpServletRequest request) {
+		Utente user = (Utente) request.getSession().getAttribute("user");
+		if (user==null)
+			return null;
+		
+		int ups=0;
+		int downs=0;
+		try {
+			Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
+			ups = DBManager.getInstance().LikeDAO().countUp(p);
+			downs = DBManager.getInstance().LikeDAO().countDown(p);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		HashMap<String,Integer> map = new HashMap<String,Integer>();
+		map.put("up", ups);
+		map.put("down", downs);
+		return map;
 	}
 
 }

@@ -74,6 +74,54 @@ function loadComments() {
 	});
 }
 
+function setlikeUp() {
+	$.post("/setlike",
+	{productid: productid,
+	up: true},
+	function(data,status) {
+		if (data==="OK")
+			loadlikes();
+	});
+}
+
+function setlikeDown() {
+	$.post("/setlike",
+	{productid: productid,
+	up: false},
+	function(data,status) {
+		if (data==="OK")
+			loadlikes();
+	});
+}
+
+function loadlikes() {
+	$.post("/getlike",
+	{productid: productid},
+	function(data,status) {
+		if (data==="UP") {
+			$("#thumb-up i").addClass("set");
+			$("#thumb-down i").removeClass("set");
+		}
+		else if (data==="DOWN") {
+			$("#thumb-down i").addClass("set");
+			$("#thumb-up i").removeClass("set");
+		}
+		else if (data==="NO") {
+			$("#thumb-down i").removeClass("set");
+			$("#thumb-up i").removeClass("set");
+		}
+	});
+
+	$.post("/getnlikes",
+	{productid: productid},
+	function(data,status) {
+		if (data!==null) {
+			$("#nthumbs-up").html("<strong>"+data["up"]+"</strong>");
+			$("#nthumbs-down").html("<strong>"+data["down"]+"</strong>");
+		}
+	});
+
+}
 
 
 $(document).ready(function(){
@@ -83,4 +131,7 @@ $(document).ready(function(){
 	$("#btn-buy").click(buy);
 	$("#btn-send").click(mex);
 	$("#btn-comment").click(comment);
+	$("#thumb-up").click(setlikeUp);
+	$("#thumb-down").click(setlikeDown);
+	loadlikes();
 });

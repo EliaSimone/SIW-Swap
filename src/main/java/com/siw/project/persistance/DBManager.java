@@ -48,6 +48,10 @@ public class DBManager {
 		return new CommentoDAOJDBC(dataSource);
 	}
 	
+	public LikeDAO LikeDAO() {
+		return new LikeDAOJDBC(dataSource);
+	}
+	
 	/*public CategoriaDAO CategoriaDAO() {
 		return new CategoriaDAOJDBC(dataSource);
 	}*/
