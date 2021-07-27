@@ -36,19 +36,19 @@ public class DBManager {
 		return new ProdottoDAOJDBC(dataSource);
 	}
 	
-	public UtenteDAO UtenteDAO() {
+	public UtenteDAO utenteDAO() {
 		return new UtenteDAOJDBC(dataSource);
 	}
 	
-	public MessaggioDAO MessaggioDAO() {
+	public MessaggioDAO messaggioDAO() {
 		return new MessaggioDAOJDBC(dataSource);
 	}
 	
-	public CommentoDAO CommentoDAO() {
+	public CommentoDAO commentoDAO() {
 		return new CommentoDAOJDBC(dataSource);
 	}
 	
-	public LikeDAO LikeDAO() {
+	public LikeDAO likeDAO() {
 		return new LikeDAOJDBC(dataSource);
 	}
 	

@@ -28,7 +28,7 @@ public class MyRestController {
 	
 	@PostMapping("/login")
 	public String login(@RequestParam String user, @RequestParam String password, HttpServletRequest request) {
-		Utente u = DBManager.getInstance().UtenteDAO().findByName(user);
+		Utente u = DBManager.getInstance().utenteDAO().findByName(user);
 		if (u==null)
 			return "NO";
 		if (u.getPassword().equals(password)) {
@@ -40,12 +40,12 @@ public class MyRestController {
 	
 	@PostMapping("/signin")
 	public String signin(@RequestParam String user, @RequestParam String password, HttpServletRequest request) {
-		Utente u = DBManager.getInstance().UtenteDAO().findByName(user);
+		Utente u = DBManager.getInstance().utenteDAO().findByName(user);
 		if (u!=null)
 			return "NO";
 		u = new Utente(user, null, password, null, null, null, null);
 		try {
-			DBManager.getInstance().UtenteDAO().save(u);
+			DBManager.getInstance().utenteDAO().save(u);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -89,7 +89,7 @@ public class MyRestController {
 		user.setTel(tel);
 		user.setDescrizione(descrizione);
 		try {
-			DBManager.getInstance().UtenteDAO().update(user);
+			DBManager.getInstance().utenteDAO().update(user);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -152,11 +152,11 @@ public class MyRestController {
 		Utente seller = (Utente) request.getSession().getAttribute("user");
 		if (seller==null)
 			return "NO";
-		Utente sender = DBManager.getInstance().UtenteDAO().findByName(from);
-		Utente dest = DBManager.getInstance().UtenteDAO().findByName(to);
+		Utente sender = DBManager.getInstance().utenteDAO().findByName(from);
+		Utente dest = DBManager.getInstance().utenteDAO().findByName(to);
 		Messaggio messaggio=new Messaggio(-1, sender, dest, text, new Date(System.currentTimeMillis()));
 		try {
-			DBManager.getInstance().MessaggioDAO().save(messaggio);
+			DBManager.getInstance().messaggioDAO().save(messaggio);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -174,7 +174,7 @@ public class MyRestController {
 		Prodotto p=DBManager.getInstance().prodottoDAO().findById(productid);		
 		Commento commento = new Commento(productid, text, user, p);
 		try {
-			DBManager.getInstance().CommentoDAO().save(commento);
+			DBManager.getInstance().commentoDAO().save(commento);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -191,7 +191,7 @@ public class MyRestController {
 			return null;
 		}
 		Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
-		return DBManager.getInstance().CommentoDAO().findByProduct(p);
+		return DBManager.getInstance().commentoDAO().findByProduct(p);
 	}
 	
 	@PostMapping("/setlike")
@@ -200,16 +200,16 @@ public class MyRestController {
 		if (user==null)
 			return "NO";
 		Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
-		Like l = DBManager.getInstance().LikeDAO().findByPrimaryKey(p, user);
+		Like l = DBManager.getInstance().likeDAO().findByPrimaryKey(p, user);
 		if (l==null)
-			DBManager.getInstance().LikeDAO().save(new Like(up, user, p));
+			DBManager.getInstance().likeDAO().save(new Like(up, user, p));
 		else {
 			if (l.isUp() && up)
-				DBManager.getInstance().LikeDAO().delete(l);
+				DBManager.getInstance().likeDAO().delete(l);
 			if (!l.isUp() && !up)
-				DBManager.getInstance().LikeDAO().delete(l);
+				DBManager.getInstance().likeDAO().delete(l);
 			else
-				DBManager.getInstance().LikeDAO().update(new Like(up, user, p));
+				DBManager.getInstance().likeDAO().update(new Like(up, user, p));
 		}
 		return "OK";
 	}
@@ -220,7 +220,7 @@ public class MyRestController {
 		if (user==null)
 			return "NO";
 		Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
-		Like l = DBManager.getInstance().LikeDAO().findByPrimaryKey(p, user);
+		Like l = DBManager.getInstance().likeDAO().findByPrimaryKey(p, user);
 		if (l==null)
 			return "NO";
 		else {
@@ -241,8 +241,8 @@ public class MyRestController {
 		int downs=0;
 		try {
 			Prodotto p = DBManager.getInstance().prodottoDAO().findById(productid);
-			ups = DBManager.getInstance().LikeDAO().countUp(p);
-			downs = DBManager.getInstance().LikeDAO().countDown(p);
+			ups = DBManager.getInstance().likeDAO().countUp(p);
+			downs = DBManager.getInstance().likeDAO().countDown(p);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

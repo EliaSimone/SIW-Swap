@@ -20,24 +20,27 @@
 		<br>
 		
 		<div class="container justify-content-center mt-4">
-  			<h4>Risultati per "${param.q}":</h4>
+  			<h4>Categorie:</h4>
 		</div>
 		<br>
 		
+		<c:forEach items="${products}" var="listprod">
+		<h4 class="text-center my-2">${listprod.key}</h4>
 		<div class="row col-10 offset-1">
-			<c:forEach items="${results}" var="item" varStatus="status">
+			<c:forEach items="${listprod.value}" var="product">
 			<div class="col-xl-3 col-lg-4 col-md-6 p-4">
 				<div class="card shadow p-2">
 					<img class="card-img-top" src="https://www.w3schools.com/bootstrap4/img_avatar1.png" alt="Immagine prodotto">
 					<div class="card-body">
-						<h4 class="card-title">${item.nome} <span class="text-primary ml-2">${item.fprezzo}&euro;</span></h4>
-						<p class="card-text">${item.descrizione}</p>
-						<a href="/prodotto?id=${item.identifier}" class="btn btn-primary stretched-link">Vai al prodotto</a>
+						<h4 class="card-title">${product.nome} <span class="text-primary ml-2">${product.fprezzo}&euro;</span></h4>
+						<p class="card-text">${product.descrizione}</p>
+						<a href="/prodotto?id=${product.identifier}" class="btn btn-primary stretched-link">Vai al prodotto</a>
 					</div>
 				</div>
 			</div>
 			</c:forEach>
 		</div>
+		</c:forEach>
 
 	</body>
 </html>

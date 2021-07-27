@@ -30,7 +30,7 @@
 				<div class="card shadow p-2">
 					<img class="card-img-top" src="https://www.w3schools.com/bootstrap4/img_avatar1.png" alt="Immagine prodotto">
 					<div class="card-body">
-						<h4 class="card-title">${item.nome}</h4>
+						<h4 class="card-title">${item.nome} <span class="text-primary ml-2">${item.fprezzo}&euro;</span></h4>
 						<p class="card-text">${item.descrizione}</p>
 						<a href="#" class="btn btn-primary stretched-link" data-toggle="collapse" data-target="#error${status.index}">Vai al prodotto</a>
 						<p id="error${status.index}" class="collapse text-danger my-2"><strong>non sei loggato</strong></p>

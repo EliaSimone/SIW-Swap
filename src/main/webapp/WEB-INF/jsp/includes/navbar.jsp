@@ -20,7 +20,7 @@
 				<a class="nav-link yellow" href="/">Home</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Categorie</a>
+				<a class="nav-link" href="/categorie">Categorie</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#">Info</a>

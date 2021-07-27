@@ -215,6 +215,54 @@ public class ProdottoDAOJDBC implements ProdottoDAO {
 	}
 	
 	@Override
+	public List<Prodotto> getPerCategory(Categoria categoria) {
+		List<Prodotto> prodotti = new ArrayList<Prodotto>();
+		Connection conn = null;
+		
+		try {
+			conn = dbSource.getConnection();
+			PreparedStatement  st = conn.prepareStatement("select p.*,\r\n"
+					+ "vend.cognome as vendcognome, vend.password as vendpassword, vend.citta as vendcitta, vend.indirizzo as vendindirizzo, vend.descrizione as venddescr, vend.tel as vendtel\r\n"
+					+ "from prodotto as p\r\n"
+					+ "left join categoria as c on c.nome=p.categoria\r\n"
+					+ "left join utente as vend on vend.nome=p.venditore\r\n"
+					+ "where p.categoria = ? and p.compratore is null");
+			st.setString(1, categoria.getNome());
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				int _id = rs.getInt("identifier");
+				String nome = rs.getString("nome");
+				double prezzo = rs.getDouble("prezzo");
+				String desc = rs.getString("descrizione");
+				
+				Categoria catg = new Categoria(rs.getString("categoria"));
+				
+				String vNome = rs.getString("venditore");
+				String vCognome = rs.getString("vendcognome");
+				String vPassword = rs.getString("vendpassword");
+				String vCitta = rs.getString("vendcitta");
+				String vIndr = rs.getString("vendindirizzo");
+				String vDesc = rs.getString("venddescr");
+				String vTel = rs.getString("vendtel");
+				Utente vend = new Utente(vNome, vCognome, vPassword, vCitta, vIndr, vDesc, vTel);
+				
+				prodotti.add(new Prodotto(_id, nome, prezzo, desc, catg, vend, null));	
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		
+		return prodotti;
+	}
+	
+	@Override
 	public List<Prodotto> searchProduct(String sq) {
 		List<Prodotto> prodotti = new ArrayList<Prodotto>();
 		Connection conn = null;

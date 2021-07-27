@@ -58,7 +58,7 @@
 					        	<option>elettronica</option>
 					        	<option>sport</option>
 					        	<option>indumenti</option>
-					        	<option>casa e arredamenti</option>
+					        	<option>arredamenti</option>
 					        	<option>utilità</option>
 					      	</select>
 					      </div>
