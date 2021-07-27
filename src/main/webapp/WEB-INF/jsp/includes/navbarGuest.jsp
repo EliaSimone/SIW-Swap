@@ -15,9 +15,6 @@
 			<li class="nav-item">
 				<a class="nav-link" href="/categorie">Categorie</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Info</a>
-			</li>
 		</ul>
 		<form action="/search">
 			<div class="form-row">
