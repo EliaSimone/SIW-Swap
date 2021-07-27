@@ -133,5 +133,6 @@ $(document).ready(function(){
 	$("#btn-comment").click(comment);
 	$("#thumb-up").click(setlikeUp);
 	$("#thumb-down").click(setlikeDown);
+	$("#seller").tooltip();
 	loadlikes();
 });

@@ -14,6 +14,11 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<script src="/javascript/mainNav.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+		</script>
 	</head>
 	<body>
 		<jsp:include page="includes/navbar.jsp" />
@@ -69,7 +74,7 @@
 	  			<div id="sales" class="collapse m-3">
 	  				<ul class="list-group">
 						<c:forEach items="${listsales}" var="item" varStatus="status">
-						<li class="list-group-item">${item.nome}<span class="text-primary ml-2">${item.fprezzo}&euro;</span></li>
+						<li class="list-group-item">${item.nome}<span class="text-primary ml-2">${item.fprezzo}&euro;</span> <a href="#" data-toggle="tooltip" data-html="true" title="${item.compratore.nome} ${item.compratore.cognome} <br>città: ${item.compratore.citta} <br>indirizzo: ${item.compratore.indirizzo} <br>tel: ${item.compratore.tel}" data-placement="left" class="text-primary pull-right"><strong>a ${item.compratore.nome}</strong></a> </li>
 						</c:forEach>
 					</ul>
 				</div>

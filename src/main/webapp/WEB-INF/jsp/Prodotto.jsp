@@ -51,11 +51,13 @@
 	  			Descrizione:<br>
 	  			${product.descrizione}
 			</div>
-			<div class="col-3">
-	  			Venditore: ${product.venditore.nome} ${product.venditore.cognome}<br>
-	  			Città: ${product.venditore.citta}<br>
-	  			Indirizzo: ${product.venditore.indirizzo}<br>
-	  			Numero tel.: ${product.venditore.tel}<br>
+			<div class="col-md-3 col-sm-8 col-10">
+				<div id="seller" data-toggle="tooltip" title="${product.venditore.descrizione}" data-placement="left">
+		  			Venditore: ${product.venditore.nome} ${product.venditore.cognome}<br>
+		  			Città: ${product.venditore.citta}<br>
+		  			Indirizzo: ${product.venditore.indirizzo}<br>
+		  			Numero tel.: ${product.venditore.tel}<br>
+	  			</div>
 	  			<c:if test="${user.nome!=product.venditore.nome}">
 	  				<button class="btn btn-primary w-75 m-2" data-toggle="modal" data-target="#mexmodal">Invia Messaggio</button>
 	  			</c:if>
